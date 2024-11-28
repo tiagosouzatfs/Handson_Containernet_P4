@@ -1,0 +1,135 @@
+Prática - conhecendo a cli do containernet:
+
+# compilar o arquivo hcp.p4 para apresentação do containernet e suas funcionalidades
+p4c --target bmv2 --arch v1model hcp.p4
+
+# executar o containernet
+sudo python3 hcp.py
+
+# como pedir ajuda
+help
+
+# como sair da cli do containernet
+EOF
+exit
+quit
+
+# mostrar todas as informações dos nós da rede como interface e conexões
+dump
+
+# listar todas as interfaces de rede
+intfs
+
+# teste de largura de banda entre dois hosts com protocolo TCP
+iperf host1 host2
+
+# teste de largura de banda entre dois hosts com protocolo UDP
+iperfudp <largura de banda> host1 host2
+* no iperf não é passada largura de banda para teste pois o TCP é ajustado dinâmicamente
+
+# listar todos os links da rede
+links
+
+# listar todos os nós da rede
+net
+
+# mostar todos os nós da rede
+nodes
+
+# testa o comando ping entre todos os hosts da rede
+pingall
+
+# testa o comando ping entre todos os hosts da rede e retorna os resultados de cada ping
+pingallfull
+
+# mostar as portas do switch ativas
+ports
+
+# ping entre dois hosts
+host1 ping host2
+
+# iniciar o bash em um host
+host bash
+
+# verificar informações da placa de rede de um host
+host ifconfig
+
+# outro comandos
+dpctl
+gterm
+link
+noecho
+pingpair
+pingpairfull
+px
+py
+sh
+source
+switch
+time
+x
+xterm
+
+# compilar o arquivo hcp_v3.p4 para apresentação do containernet e suas funcionalidades
+p4c --target bmv2 --arch v1model hcp_v3.p4
+
+*** Prática 1 - iperf:
+
+Execute o teste de largura de banda TCP entre h1 e h2:
+iperf h1 e h2
+
+valide a conexão TCP com a resposta do teste
+
+*** Prática 2 - iperfudp:
+
+Execute o teste de largura de banda UDP entre h1 e h2:
+iperf h1 e h2
+
+valide a falha de conexão para o protocolo UDP
+
+*** Prática 3 - ping:
+
+Execute o teste de ping entre os hosts da rede:
+ping h1 e h2
+ping h1 e h3
+ping h2 e h3
+pingallfull
+pingallfull
+
+valide a falha de conexão para o protocolo ICMP
+
+*** Prática 4 - cliente/servidor:
+
+# Vamos utilizar o utilitário Netcat, pois ele envia dados via TCP entre as duas máquinas.
+
+No host h3, de ip 10.0.0.3, inicie um servidor TCP ouvindo em uma porta específica, como a porta 8080:
+nc -l -p 8080
+
+-l: indica que o Netcat deve escutar (aguardar por conexões).
+-p 8080: especifica a porta em que o servidor deve escutar.
+O servidor estará aguardando conexões na porta 8080 e esperando por qualquer dado enviado do cliente.
+
+No host h1, você deve configurar o cliente TCP para se conectar ao servidor e enviar uma mensagem:
+nc 10.0.0.3 8080
+
+Agora, se você digitar algo no host h1, esses dados serão enviados para a h3, e você pode conferir no terminal
+do host h3. 
+
+*** Prática 5 - cliente/servidor:
+
+No host h1, de ip 10.0.0.1, inicie um servidor TCP ouvindo em uma porta específica, como a porta 12345:
+nc -l -p 12345
+
+Entre no host h2 e execute no bash o comando abaixo para validar a conexão tcp:
+nc -zv 10.0.0.1 12345
+
+*** Prática 6 - cliente/servidor:
+
+Entre no bash do host h3 e execute o script python server.py:
+python3 server.py &
+
+Entre no bash do host h2 e execute o script python client.py:
+python3 client.py
+
+Valide a resposta do servidor no bash do client h2 e a mensagem enviada para o servidor no bash de h3
+
